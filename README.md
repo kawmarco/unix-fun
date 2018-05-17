@@ -2,4 +2,4 @@
 Mostly some didactic reimplementations of common UNIX utilities
 
 # References
- * AUP: Advanced Unix Programming (Third Edition), W. Richard Stevens and Stephen A. Rago
+ * APUE: Advanced Programming in the UNIX environment (Third Edition), W. Richard Stevens and Stephen A. Rago

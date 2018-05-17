@@ -1,5 +1,5 @@
 /*
- * Simple ls implementation, mostly from [AUP]
+ * Simple ls implementation, mostly from [APUE]
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +25,7 @@ int main(int argc, char* argv[]){
         // as of Linux 4.13, d_name is limited to 
         // NAME_MAX = 255 chars
         // https://github.com/tinganho/linux-kernel/blob/f1349b033d5faee3682eea244a7cb4dbbb7982d0/include/linux/limits.h#L11
+        debugger();
         printf("%s\n", dirp->d_name);
     }
 

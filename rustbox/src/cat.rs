@@ -58,6 +58,7 @@ fn _catenate(filenames: Vec<String>, f_out: &mut impl io::Write) -> io::Result<(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use regex::Regex;
     use std::fs::File;
     use std::io::{BufReader, Write};
     use tempfile::tempdir;
@@ -114,6 +115,24 @@ mod tests {
 
         assert!(ret.is_ok());
         assert_eq!(stdout, b"");
+    }
+
+    #[test]
+    fn _test_catenate_error() {
+        // Try opening a non-existing file
+        let filenames: Vec<String> = vec![(*"/sakljdslakd/asdkljaslkdj").to_string()];
+        let mut stdout = Vec::new();
+
+        let ret = _catenate(filenames, &mut stdout);
+
+        // Ensure it returned an error and printed nothing to stoud
+        assert!(ret.is_err());
+        assert_eq!(stdout, b"");
+
+        // Ensure it printed friendly error message
+        let re_error = Regex::new(r"^Failed to open file '/sakljdslakd/asdkljaslkdj': .*").unwrap();
+        let error_message = ret.err().unwrap().to_string();
+        assert!(re_error.is_match(error_message.as_str()));
     }
 
     #[test]

@@ -2,12 +2,13 @@ use std::env;
 use std::path::Path;
 
 // subcommand modules
+mod cat;
 mod echo;
 
 fn main() {
     let argv: Vec<String> = env::args().collect();
 
-    // Get executable basename (i.e. `basename $0`)
+    // Get executable basename (equivalent to `basename $0`)
     let executable_name: &str = Path::new(&argv[0]).file_name().unwrap().to_str().unwrap();
 
     // Check if this was invoked as `rustbox $subcommand` (e.g. `rustbox echo "blah"`) or
@@ -23,6 +24,10 @@ fn dispatch_subcommand(executable_name: &str, args: Vec<String>) {
     // Dispatch subcommand corresponding to executable_name
     match executable_name {
         "echo" => echo::main(args),
+        "cat" => match cat::main(args) {
+            Err(reason) => fail(format!("{}", reason).as_str(), 1),
+            Ok(_) => (),
+        },
         unknown => fail(format!("Unknown subcommand: '{}'", unknown).as_str(), 2),
     }
 }

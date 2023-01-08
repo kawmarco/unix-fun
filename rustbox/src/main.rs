@@ -4,6 +4,7 @@ use std::path::Path;
 // subcommand modules
 mod cat;
 mod echo;
+mod ls;
 
 fn main() {
     let argv: Vec<String> = env::args().collect();
@@ -25,6 +26,10 @@ fn dispatch_subcommand(executable_name: &str, args: Vec<String>) {
     match executable_name {
         "echo" => echo::main(args),
         "cat" => match cat::main(args) {
+            Err(reason) => fail(format!("{}", reason).as_str(), 1),
+            Ok(_) => (),
+        },
+        "ls" => match ls::main(args) {
             Err(reason) => fail(format!("{}", reason).as_str(), 1),
             Ok(_) => (),
         },

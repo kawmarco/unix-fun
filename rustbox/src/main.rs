@@ -1,13 +1,14 @@
-use std::env;
+use std::env as std_env;
 use std::path::Path;
 
 // subcommand modules
 mod cat;
 mod echo;
+mod env;
 mod ls;
 
 fn main() {
-    let argv: Vec<String> = env::args().collect();
+    let argv: Vec<String> = std_env::args().collect();
 
     // Get executable basename (equivalent to `basename $0`)
     let executable_name: &str = Path::new(&argv[0]).file_name().unwrap().to_str().unwrap();
@@ -30,6 +31,10 @@ fn dispatch_subcommand(executable_name: &str, args: Vec<String>) {
             Ok(_) => (),
         },
         "ls" => match ls::main(args) {
+            Err(reason) => fail(format!("{}", reason).as_str(), 1),
+            Ok(_) => (),
+        },
+        "env" => match env::main(args) {
             Err(reason) => fail(format!("{}", reason).as_str(), 1),
             Ok(_) => (),
         },

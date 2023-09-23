@@ -6,6 +6,7 @@ mod cat;
 mod echo;
 mod env;
 mod ls;
+mod nc;
 
 fn main() {
     let argv: Vec<String> = std_env::args().collect();
@@ -35,6 +36,10 @@ fn dispatch_subcommand(executable_name: &str, args: Vec<String>) {
             Ok(_) => (),
         },
         "env" => match env::main(args) {
+            Err(reason) => fail(format!("{}", reason).as_str(), 1),
+            Ok(_) => (),
+        },
+        "nc" => match nc::main(args) {
             Err(reason) => fail(format!("{}", reason).as_str(), 1),
             Ok(_) => (),
         },
